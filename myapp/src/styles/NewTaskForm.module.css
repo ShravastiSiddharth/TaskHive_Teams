@@ -1,10 +1,4 @@
-.newTaskForm{
-    position: absolute;
-    right: 0;
-    
-}
 
-/* NewTaskForm.module.css */
 .newTaskForm {
     width: 26vw;
     margin: 0 auto;

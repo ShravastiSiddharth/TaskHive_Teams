@@ -18,7 +18,7 @@ const register = async (req, res) => {
         await newUser.save();
 
         const payload = { id: newUser.id };
-        const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' });
+        const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '3h' });
 
         res.json({ token });
     } catch (err) {
@@ -42,7 +42,7 @@ const login = async (req, res) => {
         }
 
         const payload = { id: user.id };
-        const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' });
+        const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '3h' });
 
         res.json({ token });
     } catch (err) {

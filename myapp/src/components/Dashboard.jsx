@@ -2,6 +2,7 @@ import { useAuth } from '../authentication/AuthContext';
 import { useEffect, useState } from 'react';
 import Sidebar from '../components/Sidebar';
 import TaskBoard from '../components/TaskBoard';
+import NewTaskForm from './NewTaskForm';
 import styles from '../styles/Dashboard.module.css';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
@@ -11,6 +12,7 @@ const Dashboard = () => {
     const { isAuthenticated, user } = useAuth();
     const navigate = useNavigate();
     const [tasks, setTasks] = useState([]);
+    const [isModalOpen, setIsModalOpen] = useState(false);
     
 
     useEffect(() => {
@@ -32,6 +34,11 @@ const Dashboard = () => {
         } catch (error) {
             console.error('Error fetching tasks:', error);
         }
+    };
+
+    const handleTaskAdded = (newTask) => {
+        fetchTasks(); 
+        setIsModalOpen(false); 
     };
 
     const handleTaskMoved = async (task, newStatus) => {
@@ -58,12 +65,13 @@ const Dashboard = () => {
     return (
         <div className={styles.dashboard}>
             <div>
-                <Sidebar />
+                <Sidebar setIsModalOpen={setIsModalOpen}/>
             </div>
             <div className={styles.content}>
                 <h1>Welcome!  </h1>
                 <TaskBoard tasks={tasks} onTaskMoved={handleTaskMoved} onTaskUpdated={handleTaskUpdated} fetchTasks={fetchTasks} />
             </div>
+            <NewTaskForm isOpen={isModalOpen} onRequestClose={() => setIsModalOpen(false)} onTaskAdded={handleTaskAdded} />
         </div>
     );
 };

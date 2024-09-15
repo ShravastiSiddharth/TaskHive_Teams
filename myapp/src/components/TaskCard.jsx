@@ -55,7 +55,7 @@ const TaskCard = ({ task, onTaskMoved, onTaskUpdated, index, fetchTasks }) => {
     const truncateDescription = (text, wordLimit = 15) => {
         const words = text.split(' ');
         if (words.length > wordLimit) {
-            return words.slice(0, wordLimit).join(' ') + '...'; // Add ellipsis if truncated
+            return words.slice(0, wordLimit).join(' ') + '...'; 
         }
         return text;
     };
