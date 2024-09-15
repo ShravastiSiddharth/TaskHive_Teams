@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import styles from '../styles/NewTaskForm.module.css';
+import mystyle from '../styles/TaskCard.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEnvelope, faBars, faStar, faRectangleXmark, faListCheck, faCalendarDays } from '@fortawesome/free-solid-svg-icons';
 import { toast } from 'react-toastify';
 import { Link,useNavigate } from 'react-router-dom';
+import Modal from 'react-modal';
 
 
 
-const NewTaskForm = ({ onTaskAdded }) => {
+const NewTaskForm = ({ onTaskAdded, isOpen, onRequestClose  }) => {
     const [formData, setFormData] = useState({
         title: '',
         description: '',
@@ -24,6 +26,8 @@ const NewTaskForm = ({ onTaskAdded }) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
+    
+   
     const onSubmit = async (e) => {
         e.preventDefault();
         try {
@@ -46,11 +50,13 @@ const NewTaskForm = ({ onTaskAdded }) => {
     };
 
     return (
+        <>
+        <Modal isOpen={isOpen}  contentLabel="Add New Task Modal">
         <div className={styles.newTaskForm}>
             <div className={styles.crossForm}>
-                <Link to="/dashboard" >
-                    <FontAwesomeIcon icon={faRectangleXmark} style={{ fontSize: '1.5rem' }} />
-                </Link>
+                
+                    <FontAwesomeIcon icon={faRectangleXmark} style={{ fontSize: '1.5rem' }}onClick={onRequestClose} />
+               
             </div>
             <h2>Add New Task</h2>
             <form onSubmit={onSubmit}>
@@ -109,6 +115,8 @@ const NewTaskForm = ({ onTaskAdded }) => {
                 <button type="submit" className={styles.submitButton}>Add Task</button>
             </form>
         </div>
+        </Modal>
+        </>
     );
 };
 
