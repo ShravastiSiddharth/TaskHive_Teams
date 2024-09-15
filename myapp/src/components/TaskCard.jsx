@@ -8,6 +8,7 @@ import { useAuth } from '../authentication/AuthContext';
 import { Draggable } from 'react-beautiful-dnd';
 import Swal from 'sweetalert2'
 import DescriptionModal from './DescriptionModal';
+import EditModal from './EditModal';
 
 const TaskCard = ({ task, onTaskMoved, onTaskUpdated, index, fetchTasks }) => {
     const { user } = useAuth();
@@ -31,21 +32,7 @@ const TaskCard = ({ task, onTaskMoved, onTaskUpdated, index, fetchTasks }) => {
         setEditFormData({ ...editFormData, [e.target.name]: e.target.value });
     };
 
-    const handleEditSubmit = async (e) => {
-        e.preventDefault();
-        try {
-            await axios.put(`http://localhost:5000/api/tasks/${task._id}`, editFormData, {
-                headers: {
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`
-                }
-            });
-            setEditModalOpen(false);
-            onTaskUpdated();
-            fetchTasks();
-        } catch (error) {
-            console.error('Error updating task:', error);
-        }
-    };
+    
 
     const handleDelete = async () => {
 
@@ -75,14 +62,14 @@ const TaskCard = ({ task, onTaskMoved, onTaskUpdated, index, fetchTasks }) => {
 
 
     function daysBetweenDates(date1, date2) {
-        // Convert the dates to Date objects if they are not already
+      
         const startDate = new Date(date1);
         const endDate = new Date(date2);
 
-        // Calculate the difference in milliseconds
+        
         const differenceInTime = endDate.getTime() - startDate.getTime();
 
-        // Convert milliseconds to days
+       
         const differenceInDays = Math.ceil(differenceInTime / (1000 * 3600 * 24));
 
         return differenceInDays;
@@ -148,67 +135,11 @@ const TaskCard = ({ task, onTaskMoved, onTaskUpdated, index, fetchTasks }) => {
 
 
             <DescriptionModal isViewModalOpen={isViewModalOpen} setViewModalOpen={setViewModalOpen} description={task.description} title={task.title} createDate={formatDate(task.createdAt)} deadlineDate={formatDate(task.deadline)} RemainingDays={daysBetweenDates(formatDate(task.createdAt), formatDate(task.deadline))} handleDelete={handleDelete} user={user} setEditModalOpen={setEditModalOpen}/>
-                    <Modal
-                        isOpen={isEditModalOpen}
-                        onRequestClose={() => setEditModalOpen(false)}
-                        className={styles.editModal}
-                    >
-                        <h2>Edit Your Task</h2>
-                        <form onSubmit={handleEditSubmit}>
-                            <div className={styles.formGroup}>
-                                <label htmlFor="title">Title</label>
-                                <input
-                                    type="text"
-                                    name="title"
-                                    value={editFormData.title}
-                                    onChange={handleEditChange}
-                                    className={styles.inputField}
-                                />
-                            </div>
-                            <div className={styles.formGroup}>
-                                <label htmlFor="description">Description</label>
-                                <textarea
-                                    name="description"
-                                    value={editFormData.description}
-                                    className={styles.textArea}
-                                    onChange={handleEditChange}
-                                />
-                            </div>
-                            <div className={styles.formGroup}>
-                                <label htmlFor="priority">Priority</label>
-                                <select
-                                    name="priority"
-                                    value={editFormData.priority}
-                                    onChange={handleEditChange}
-                                    className={styles.selectField}
-                                >
-                                    <option value="Low">Low</option>
-                                    <option value="Medium">Medium</option>
-                                    <option value="Urgent">Urgent</option>
-                                </select>
-                            </div>
-                            <div className={styles.formGroup}>
-                                <label htmlFor="deadline">Deadline</label>
-                                <input
-                                    type="date"
-                                    name="deadline"
-                                    value={editFormData.deadline ? new Date(editFormData.deadline).toISOString().substr(0, 10) : ''}
-                                    onChange={handleEditChange}
-                                    className={styles.inputField}
-                                />
-                            </div>
-                            <div className={styles.editdiv}>
-                                <button type="submit" className={styles.editbtn}>Save</button>
-                                <button
-                                    type="button"
-                                    onClick={() => setEditModalOpen(false)}
-                                    className={styles.editbtn}
-                                >
-                                    Cancel
-                                </button>
-                            </div>
-                        </form>
-                    </Modal>
+
+
+
+
+                   <EditModal isEditModalOpen={isEditModalOpen} setEditModalOpen={setEditModalOpen}  editFormData={editFormData} handleEditChange={handleEditChange} fetchTasks={fetchTasks} onTaskUpdated={onTaskUpdated} taskId={task._id}/>
                 </div>
             )}
         </Draggable>
