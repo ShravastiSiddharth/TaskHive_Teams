@@ -4,6 +4,7 @@ import { useAuth } from '../authentication/AuthContext';
 import styles from '../styles/Signup.module.css';
 import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
+import axiosInstance from '../config/axiosInstance';
 
 
 const SignUp = () => {
@@ -38,7 +39,7 @@ const SignUp = () => {
         }
 
         try {
-            const response = await axios.post('http://localhost:5000/api/auth/register', formData);
+            const response = await axiosInstance.post('/auth/register', formData);
             login(response.data.token);
             toast.success('Sign up successful!');
         } catch (error) {
