@@ -4,11 +4,12 @@ import styles from '../styles/NewTaskForm.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEnvelope, faBars, faStar, faRectangleXmark, faListCheck, faCalendarDays } from '@fortawesome/free-solid-svg-icons';
 import { toast } from 'react-toastify';
-import { Link,useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import Modal from 'react-modal';
+import axiosInstance from '../config/axiosInstance';
 
 
-
-const NewTaskForm = ({ onTaskAdded }) => {
+const NewTaskForm = ({ onTaskAdded, isOpen, onRequestClose }) => {
     const [formData, setFormData] = useState({
         title: '',
         description: '',
@@ -28,8 +29,8 @@ const NewTaskForm = ({ onTaskAdded }) => {
         e.preventDefault();
         try {
             const token = localStorage.getItem('token');
-            const response = await axios.post(
-                'http://localhost:5000/api/tasks',
+            const response = await axiosInstance.post(
+                '/tasks',
                 formData,
                 {
                     headers: {
@@ -46,17 +47,25 @@ const NewTaskForm = ({ onTaskAdded }) => {
     };
 
     return (
-        <div className={styles.newTaskForm}>
-            <div className={styles.crossForm}>
-                <Link to="/dashboard" >
-                    <FontAwesomeIcon icon={faRectangleXmark} style={{ fontSize: '1.5rem' }} />
-                </Link>
-            </div>
-            <h2>Add New Task</h2>
-            <form onSubmit={onSubmit}>
-                <div className={styles.formGroup}>
-                    <FontAwesomeIcon icon={faEnvelope} />
-                    <label htmlFor="title">Title</label>
+        <Modal
+            isOpen={isOpen}
+            onRequestClose={onRequestClose}
+            contentLabel="Add New Task Modal"
+            className={styles.taskFormModal}
+            overlayClassName={styles.modalOverlay}
+            ariaHideApp={false}
+        >
+            <div className={styles.newTaskForm}>
+                <div className={styles.crossForm}>
+                    <FontAwesomeIcon icon={faRectangleXmark} onClick={onRequestClose} />
+                </div>
+                <h2>Add New Task</h2>
+                <form onSubmit={onSubmit}>
+                
+                    <div className={styles.formGroup}>
+                        <FontAwesomeIcon icon={faEnvelope} />
+                        <label htmlFor="title">Title</label>
+                    </div>
                     <input
                         type="text"
                         name="title"
@@ -65,39 +74,24 @@ const NewTaskForm = ({ onTaskAdded }) => {
                         required
                         className={styles.inputField}
                     />
-                </div>
-                <div className={styles.formGroup}>
-                    <FontAwesomeIcon icon={faBars} />
-                    <label htmlFor="description">Description</label>
+
+                   
+                    <div className={styles.formGroup}>
+                        <FontAwesomeIcon icon={faBars} />
+                        <label htmlFor="description">Description</label>
+                    </div>
                     <textarea
                         name="description"
                         value={description}
                         onChange={onChange}
                         className={styles.textArea}
-                    ></textarea>
-                </div>
-                <div className={styles.formGroup}>
-                    <FontAwesomeIcon icon={faListCheck} />
-                    <label htmlFor="status">Status</label>
-                    <select name="status" value={status} onChange={onChange} className={styles.selectField}>
-                        <option value="To-Do">To-Do</option>
-                        <option value="In Progress">In Progress</option>
-                        <option value="Under Review">Under Review</option>
-                        <option value="Completed">Finished</option>
-                    </select>
-                </div>
-                <div className={styles.formGroup}>
-                    <FontAwesomeIcon icon={faStar} />
-                    <label htmlFor="priority">Priority</label>
-                    <select name="priority" value={priority} onChange={onChange} className={styles.selectField}>
-                        <option value="Low">Low</option>
-                        <option value="Medium">Medium</option>
-                        <option value="Urgent">Urgent</option>
-                    </select>
-                </div>
-                <div className={styles.formGroup}>
-                    <FontAwesomeIcon icon={faCalendarDays} />
-                    <label htmlFor="deadline">Deadline</label>
+                    />
+
+
+                    <div className={styles.formGroup}>
+                        <FontAwesomeIcon icon={faCalendarDays} />
+                        <label htmlFor="deadline">Deadline</label>
+                    </div>
                     <input
                         type="date"
                         name="deadline"
@@ -105,11 +99,50 @@ const NewTaskForm = ({ onTaskAdded }) => {
                         onChange={onChange}
                         className={styles.inputField}
                     />
-                </div>
-                <button type="submit" className={styles.submitButton}>Add Task</button>
-            </form>
-        </div>
+
+                    
+                    <div className={styles.formGroupMulti}>
+                        <div className={styles.statusGroup}>
+                            <div className={styles.formGroup}>
+                            <FontAwesomeIcon icon={faListCheck} />
+                            <label htmlFor="status">Status</label>
+                            </div>
+                            <select
+                                name="status"
+                                value={status}
+                                onChange={onChange}
+                                className={styles.selectField}
+                            >
+                                <option value="To-Do">To-Do</option>
+                                <option value="In Progress">In Progress</option>
+                                <option value="Under Review">Under Review</option>
+                                <option value="Completed">Finished</option>
+                            </select>
+                        </div>
+
+                        <div className={styles.priorityGroup}>
+                            <div className={styles.formGroup}>
+                                <FontAwesomeIcon icon={faStar} />
+                                <label htmlFor="priority">Priority</label></div>
+                            <select
+                                name="priority"
+                                value={priority}
+                                onChange={onChange}
+                                className={styles.selectField}
+                            >
+                                <option value="Low">Low</option>
+                                <option value="Medium">Medium</option>
+                                <option value="Urgent">Urgent</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <button type="submit" className={styles.submitButton}>Add Task</button>
+                </form>
+            </div>
+        </Modal>
     );
 };
 
 export default NewTaskForm;
+

@@ -4,6 +4,7 @@ import { useAuth } from '../authentication/AuthContext';
 import styles from '../styles/Signup.module.css';
 import { Link, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2'
+import axiosInstance from '../config/axiosInstance';
 
 
 const Login = () => {
@@ -37,7 +38,7 @@ const Login = () => {
 
         try {
 
-            const response = await axios.post('http://localhost:5000/api/auth/login', formData);
+            const response = await axiosInstance.post('/auth/login', formData);
 
             login(response.data.token);
             

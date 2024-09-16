@@ -1,4 +1,3 @@
-// components/Sidebar.tsx
 import React from 'react';
 import { useAuth } from '../authentication/AuthContext';
 import styles from '../styles/Sidebar.module.css';
@@ -6,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCoffee, faHouse, faChessBoard, faGear, faUserPlus, faChartSimple, faUser, faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 
-const Sidebar = () => {
+const Sidebar = ({setIsModalOpen}) => {
     const { user, logout } = useAuth();
 
     return (
@@ -54,11 +53,11 @@ const Sidebar = () => {
                     </li>
                 </ul>
             </nav>
-            <button className={styles.createTask}>
-                <Link to="/add-task"  >
+            <button className={styles.createTask} onClick={() => setIsModalOpen(true)}>
+                
                
                     Create task
-                </Link ></button>
+               </button>
            
             
             <button onClick={logout} className={styles.logoutbtn}><FontAwesomeIcon icon={faRightFromBracket} />Logout</button>
