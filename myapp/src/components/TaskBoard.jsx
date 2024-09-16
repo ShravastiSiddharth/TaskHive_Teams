@@ -3,6 +3,7 @@ import TaskColumn from './TaskColumn';
 import styles from '../styles/TaskBoard.module.css';
 import { DragDropContext } from 'react-beautiful-dnd';
 import axios from 'axios';
+import axiosInstance from '../config/axiosInstance';
 
 const TaskBoard = ({ tasks = [], onTaskMoved, onTaskUpdated, fetchTasks }) => {
 
@@ -19,7 +20,7 @@ const TaskBoard = ({ tasks = [], onTaskMoved, onTaskUpdated, fetchTasks }) => {
         if (!task) return;
 
         try {
-            await axios.put(`http://localhost:5000/api/tasks/${draggableId}`, {
+            await axiosInstance.put(`/tasks/${draggableId}`, {
                 status: destination.droppableId
             }, {
                 headers: {

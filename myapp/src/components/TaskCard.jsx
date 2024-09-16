@@ -9,6 +9,7 @@ import { Draggable } from 'react-beautiful-dnd';
 import Swal from 'sweetalert2'
 import DescriptionModal from './DescriptionModal';
 import EditModal from './EditModal';
+import axiosInstance from '../config/axiosInstance';
 
 const TaskCard = ({ task, onTaskMoved, onTaskUpdated, index, fetchTasks }) => {
     const { user } = useAuth();
@@ -37,7 +38,7 @@ const TaskCard = ({ task, onTaskMoved, onTaskUpdated, index, fetchTasks }) => {
     const handleDelete = async () => {
 
         try {
-            await axios.delete(`http://localhost:5000/api/tasks/${task._id}`, {
+            await axiosInstance.delete(`/tasks/${task._id}`, {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`
                 }

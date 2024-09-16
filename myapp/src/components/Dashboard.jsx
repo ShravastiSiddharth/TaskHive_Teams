@@ -6,6 +6,7 @@ import NewTaskForm from './NewTaskForm';
 import styles from '../styles/Dashboard.module.css';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import axiosInstance from '../config/axiosInstance';
 
 const Dashboard = () => {
    
@@ -25,7 +26,7 @@ const Dashboard = () => {
 
     const fetchTasks = async () => {
         try {
-            const response = await axios.get('http://localhost:5000/api/tasks', {
+            const response = await axiosInstance.get('/tasks', {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`
                 }
@@ -43,7 +44,7 @@ const Dashboard = () => {
 
     const handleTaskMoved = async (task, newStatus) => {
         try {
-            await axios.put(`http://localhost:5000/api/tasks/${task._id}`, { status: newStatus }, {
+            await axiosInstance.put(`/tasks/${task._id}`, { status: newStatus }, {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`
                 }
