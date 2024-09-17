@@ -15,7 +15,8 @@ const UserSchema = new mongoose.Schema({
         required: true,
     },
     teamcode:{
-        type:String
+        type: mongoose.Schema.Types.ObjectId,
+        ref:'Team'
     }
 });
 
