@@ -20,7 +20,7 @@ const generateTeamCode = async () => {
     return code;
 };
 
-// Define the schema
+
 const TeamSchema = new mongoose.Schema({
     user: {
         type: mongoose.Schema.Types.ObjectId,

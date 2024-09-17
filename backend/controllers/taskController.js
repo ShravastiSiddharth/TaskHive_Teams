@@ -1,4 +1,3 @@
-// server/controllers/taskController.js
 const Task = require('../models/Task');
 const Team = require('../models/Team');
 const mongoose = require('mongoose');
@@ -6,7 +5,7 @@ const mongoose = require('mongoose');
 const getTasks = async (req, res) => {
     try {
         const tasks = await Task.find({ user: req.user._id });
-        res.json({ tasks }); // Ensure this structure
+        res.json({ tasks }); 
     } catch (err) {
         console.error(err.message);
         res.status(500).send('Server error');
