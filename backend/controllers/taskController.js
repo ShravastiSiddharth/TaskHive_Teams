@@ -38,21 +38,31 @@ const updateTask = async (req, res) => {
     const { title, description, status, priority, deadline } = req.body;
 
     try {
+        // Find the task by its ID
         const task = await Task.findById(req.params.id);
         if (!task) {
             return res.status(404).json({ msg: 'Task not found' });
         }
 
+        // Ensure that the task belongs to the authenticated user
         if (task.user.toString() !== req.user.id) {
             return res.status(401).json({ msg: 'User not authorized' });
         }
 
+        // Validate the status value
+        const allowedStatuses = ['To-Do', 'In Progress', 'Under Review', 'Completed'];
+        if (status && !allowedStatuses.includes(status)) {
+            return res.status(400).json({ msg: 'Invalid status value' });
+        }
+
+        // Update the fields if provided, otherwise retain existing values
         task.title = title || task.title;
         task.description = description || task.description;
         task.status = status || task.status;
         task.priority = priority || task.priority;
         task.deadline = deadline || task.deadline;
 
+        // Save the updated task
         await task.save();
         res.json(task);
     } catch (err) {
@@ -60,6 +70,7 @@ const updateTask = async (req, res) => {
         res.status(500).send('Server error');
     }
 };
+
 
 const deleteTask = async (req, res) => {
     const token = req.header('Authorization');
