@@ -1,7 +1,6 @@
 import React from 'react';
 import Modal from 'react-modal';
 import styles from '../styles/EditModal.module.css'; 
-import axios from 'axios';
 import axiosInstance from '../config/axiosInstance';
 
 const EditModal = ({ isEditModalOpen, setEditModalOpen, editFormData, handleEditChange, fetchTasks, onTaskUpdated, taskId }) => {
@@ -36,8 +35,9 @@ const EditModal = ({ isEditModalOpen, setEditModalOpen, editFormData, handleEdit
             >
                 &times;
             </button>
-            <h2 className={styles.header}>Edit  Task</h2>
+            <h2 className={styles.header}>Edit Task</h2>
             <form onSubmit={handleEditSubmit}>
+                {/* Title Field */}
                 <div className={styles.formGroup}>
                     <label htmlFor="title" className={styles.label}>Title</label>
                     <input
@@ -48,6 +48,8 @@ const EditModal = ({ isEditModalOpen, setEditModalOpen, editFormData, handleEdit
                         className={styles.inputField}
                     />
                 </div>
+
+                {/* Description Field */}
                 <div className={styles.formGroup}>
                     <label htmlFor="description" className={styles.label}>Description</label>
                     <textarea
@@ -57,7 +59,9 @@ const EditModal = ({ isEditModalOpen, setEditModalOpen, editFormData, handleEdit
                         onChange={handleEditChange}
                     />
                 </div>
+
                 <div className={styles.formRow}>
+                    {/* Priority Field */}
                     <div className={styles.formGroup}>
                         <label htmlFor="priority" className={styles.label}>Priority</label>
                         <select
@@ -71,6 +75,8 @@ const EditModal = ({ isEditModalOpen, setEditModalOpen, editFormData, handleEdit
                             <option value="Urgent">Urgent</option>
                         </select>
                     </div>
+
+                    {/* Deadline Field */}
                     <div className={styles.formGroup}>
                         <label htmlFor="deadline" className={styles.label}>Deadline</label>
                         <input
@@ -82,15 +88,31 @@ const EditModal = ({ isEditModalOpen, setEditModalOpen, editFormData, handleEdit
                         />
                     </div>
                 </div>
+
+                {/* Status Field */}
+                <div className={styles.formGroup}>
+                    <label htmlFor="status" className={styles.label}>Status</label>
+                    <select
+                        name="status"
+                        value={editFormData.status}
+                        onChange={handleEditChange}
+                        className={styles.selectField}
+                    >
+                        <option value="To-Do">To-Do</option>
+                        <option value="In Progress">In Progress</option>
+                        <option value="Under Review">Under Review</option>
+                        <option value="Completed">Completed</option>
+                    </select>
+                </div>
+
+                {/* Buttons */}
                 <div className={styles.buttonGroup}>
                     <button type="submit" className={styles.saveButton}>Save</button>
-                   
                 </div>
             </form>
         </Modal>
     );
-}
+};
 
 export default EditModal;
-
 
