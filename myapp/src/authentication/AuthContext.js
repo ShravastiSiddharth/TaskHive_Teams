@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import axiosInstance from '../config/axiosInstance';
 
 const AuthContext = createContext();
 
@@ -17,8 +18,10 @@ export const AuthProvider = ({ children }) => {
         const token = localStorage.getItem('token');
         if (token) {
             axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-            axios.get('http://localhost:5000/api/auth/me')
-                .then(response => setUser(response.data.user))
+            axios.get('https://taskhive-teams.onrender.com/api/auth/me')
+            
+                .then(response =>{ console.log("here ",response.data.user); 
+                setUser(response.data.user)})
                 .catch(() => {
                     localStorage.removeItem('token');
                     delete axios.defaults.headers.common['Authorization'];

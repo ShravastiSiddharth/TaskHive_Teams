@@ -40,7 +40,7 @@ const Login = () => {
 
             const response = await axiosInstance.post('/auth/login', formData);
 
-            login(response.data.token);
+         await   login(response.data.token);
             
          await   Swal.fire({
                 //position: "top-end",
