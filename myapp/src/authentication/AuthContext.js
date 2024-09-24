@@ -18,7 +18,7 @@ export const AuthProvider = ({ children }) => {
         const token = localStorage.getItem('token');
         if (token) {
             axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-            axiosInstance.get('/auth/me')
+            axiosInstance.get('https://taskhive-teams.onrender.com/api/auth/me')
                 .then(response => setUser(response.data.user))
                 .catch(() => {
                     localStorage.removeItem('token');
