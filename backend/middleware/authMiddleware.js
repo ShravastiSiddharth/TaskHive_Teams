@@ -8,7 +8,6 @@ const ensureAuth = async (req, res, next) => {
     }
 
     const token = authHeader.replace('Bearer ', '');
-    console.log(token)
 
     if (!token) {
         return res.status(401).json({ msg: 'No token, authorization denied' });

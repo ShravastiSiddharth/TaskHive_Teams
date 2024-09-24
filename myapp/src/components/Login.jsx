@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import { useAuth } from '../authentication/AuthContext';
 import styles from '../styles/Signup.module.css';
 import { Link, useNavigate } from 'react-router-dom';
@@ -43,7 +42,7 @@ const Login = () => {
          await   login(response.data.token);
             
          await   Swal.fire({
-                //position: "top-end",
+              
                 icon: "success",
                 title: "Log In Succesful!",
                 showConfirmButton: false,

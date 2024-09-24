@@ -1,5 +1,7 @@
+const { default: mongoose } = require('mongoose');
 const Task = require('../models/Task');
-const Team = require('../models/Team')
+const Team = require('../models/Team');
+const User = require('../models/User');
 
 
 
@@ -82,4 +84,21 @@ const getMembers = async (req, res) => {
 
 };
 
-module.exports = { createTeam, beAMember, getMembers };
+const getTeams = async (req,res) => {
+
+    try{
+    const user = await Team.find({user: req.user.id});
+    const teams = user.map(team=>({
+        id: team._id,
+        title: team.title
+
+    })) 
+
+    return res.status(200).json(teams);
+}
+catch(error){
+    return res.status(500).json("Internal error", error);
+}
+
+}
+module.exports = { createTeam, beAMember, getMembers, getTeams };

@@ -8,6 +8,7 @@ import Dashboard from './components/Dashboard';
 import NewTaskForm from './components/NewTaskForm';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Teams_Dashboard from './components/Teams/Teams_Dashboard';
 
 function App() {
   const handleTaskAdded = (task) => {
@@ -26,7 +27,7 @@ function App() {
 
             <Route path="/dashboard" element={<PrivateRoute> <Dashboard /> </PrivateRoute>}/>
             <Route path="/add-task" element={<PrivateRoute> <NewTaskForm  onTaskAdded={handleTaskAdded}/> </PrivateRoute>} />
-            
+            <Route path='/teams' element={<PrivateRoute> <Teams_Dashboard/> </PrivateRoute>}/>
           </Routes>
           <ToastContainer/>
         </AuthProvider>

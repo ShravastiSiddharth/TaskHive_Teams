@@ -121,3 +121,32 @@
 .logoutbtn:hover{
     background-color: #573bb4;
 }
+
+
+
+
+.dropdown {
+    position: relative;
+    cursor: pointer;
+}
+
+.dropdownMenu {
+    position: absolute;
+    top: 100%;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    z-index: 1;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.dropdownMenu li {
+    padding: 10px 15px;
+}
+
+.dropdownMenu li:hover {
+    background-color: #f0f0f0;
+}

@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import { useAuth } from '../authentication/AuthContext';
 import styles from '../styles/Signup.module.css';
-import { toast } from 'react-toastify';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axiosInstance from '../config/axiosInstance';
+import Swal from 'sweetalert2'
+
 
 
 const SignUp = () => {
@@ -16,6 +16,7 @@ const SignUp = () => {
     });
     const [errors, setErrors] = useState({});
     const { login } = useAuth();
+    const navigate = useNavigate();
 
     const onChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -41,7 +42,14 @@ const SignUp = () => {
         try {
             const response = await axiosInstance.post('/auth/register', formData);
             login(response.data.token);
-            toast.success('Sign up successful!');
+            await   Swal.fire({
+                //position: "top-end",
+                icon: "success",
+                title: "Log In Succesful!",
+                showConfirmButton: false,
+                timer: 1000
+              });
+            navigate('/dashboard');
         } catch (error) {
             setErrors({ server: error.response?.data?.msg || 'An error occurred. Please try again.' });
         }
