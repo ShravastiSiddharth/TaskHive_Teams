@@ -23,7 +23,7 @@ const Sidebar = ({ setIsModalOpen }) => {
                 }
             });
             setUserTeams(response.data);
-            console.log("Data Teams",response.data);
+           
     },[])
 
     return (
@@ -72,7 +72,8 @@ const Sidebar = ({ setIsModalOpen }) => {
                                ) :
                                (
                                 userTeams.map(team=>(
-                                        <li key={team.id}> <Link state={{myComponent:'dashboard'}}>{team.title}</Link> </li>
+                                    
+                                    <Link key={team.id} to='/teams' state={{myComponent:'dashboard', myTeamInfo: team }}>  <li > {team.title} </li></Link>
                                 ))
                                )
                             }

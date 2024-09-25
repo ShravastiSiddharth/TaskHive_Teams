@@ -66,16 +66,21 @@ const beAMember = async (req, res) => {
 
 const getMembers = async (req, res) => {
 
-    const { teamCode } = req.body;
+    const { teamId } = req.body;
     const userId = req.user.id;
 
     try {
-        const team = await Team.findOne({ user: userId, teamcode: teamCode });
+        const team = await Team.findOne({ user: userId, _id: teamId }).populate('members.userId','name');
         if (!team) {
             return res.status(404).json({ status: 404, msg: 'Team with this creator and Code not found' });
         }
 
-        return res.status(200).json({status:200, members: team.members});
+        const membersWithNames = team.members.map(member => ({
+            ...member.toObject(), 
+            userName: member.userId ? member.userId.name : null 
+        }));
+
+        return res.status(200).json({status:200, members: membersWithNames});
     }
     catch (error) {
         console.error('Error retrieving team members:', error.message);

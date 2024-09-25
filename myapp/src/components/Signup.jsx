@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useAuth } from '../authentication/AuthContext';
 import styles from '../styles/Signup.module.css';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import axiosInstance from '../config/axiosInstance';
 import Swal from 'sweetalert2'
 
@@ -17,6 +17,9 @@ const SignUp = () => {
     const [errors, setErrors] = useState({});
     const { login } = useAuth();
     const navigate = useNavigate();
+    const location = useLocation();
+    const params = new URLSearchParams(location.search);
+    const token = params.get('token'); 
 
     const onChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -40,17 +43,37 @@ const SignUp = () => {
         }
 
         try {
+
+            if(token){
+
+                const response = await axiosInstance.post('/auth/register/team',formData,{
+                    headers:{
+                        Authorization: token
+                    }
+                });
+                login(response.data.newToken);
+                console.log(response.data)
+                await   Swal.fire({
+                    icon: "success",
+                    title: "Log In Succesful!",
+                    showConfirmButton: false,
+                    timer: 1000
+                  });
+                navigate('/dashboard');
+
+            }
+            else{
             const response = await axiosInstance.post('/auth/register', formData);
             login(response.data.token);
             await   Swal.fire({
-                //position: "top-end",
                 icon: "success",
                 title: "Log In Succesful!",
                 showConfirmButton: false,
                 timer: 1000
               });
-            navigate('/dashboard');
+            navigate('/dashboard'); }
         } catch (error) {
+        
             setErrors({ server: error.response?.data?.msg || 'An error occurred. Please try again.' });
         }
     };

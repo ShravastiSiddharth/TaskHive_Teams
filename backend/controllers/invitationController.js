@@ -28,7 +28,7 @@ const sendInvite = async (req, res) => {
 
         const token = jwt.sign({ email, teamId }, secret, { expiresIn: expiration });
 
-        const inviteLink = `https://yourapp.com/signup?token=${token}`;
+        const inviteLink = `http://localhost:3000/signup?token=${token}`;
 
 
         const transporter = nodemailer.createTransport({

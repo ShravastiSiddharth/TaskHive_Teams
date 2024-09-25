@@ -3,11 +3,13 @@ import styles from '../../styles/Teams_Dashboard.module.css'
 import Sidebar from '../Sidebar'
 import { useLocation } from 'react-router-dom'
 import Create_Team_Form from './Create_Team_Form'
+import Team_Info from './Team_Info'
 
 const Teams_Dashboard = () => {
 
     const location = useLocation();
-    const {myComponent} =  location.state || {myComponent:'dashboard'};
+    const {myComponent,myTeamInfo} =  location.state || {myComponent:'dashboard'};
+   
 
     return (
         <>
@@ -15,20 +17,13 @@ const Teams_Dashboard = () => {
                 <div>
                     <Sidebar/>
                 </div>
-                { myComponent == 'dashboard' &&
-                <div className={styles.container}>
-                    <div className={styles.row}>
-                        <div className={styles.card}>Card 1</div>
-                        <div className={styles.card}>Card 2</div>
-                        <div className={styles.card}>Card 3</div>
-                    </div>
-                    <div className={styles.row}>
-                        <div className={styles.fullWidthCard}>Card 4</div>
-                    </div>
-                </div>}
+                <div>
+                { myComponent == 'dashboard' &&  <Team_Info myTeamInfo={myTeamInfo}/>
+              
+                }
 
-{myComponent=='create_team' && <Create_Team_Form/>}
-
+                {myComponent=='create_team' && <Create_Team_Form/>}
+                </div>
 
             </div>
         </>
